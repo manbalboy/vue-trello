@@ -7,7 +7,14 @@ const routes = [
     // { path: '/todos', name: 'todoList', component: TodoList },
     // { path: '/todos/add', name: 'addTodo', component: AddTodo },
     // { path: '/todos/update/:id', name: 'updateTodo', component: UpdateTodo },
-    // { path: '/:catchAll(.*)', component: NotFound },
+    {
+        path: '/:catchAll(.*)',
+        name: 'NotFound',
+        component: { template: '<div>notfound</div>' },
+        meta: {
+            requiresAuth: false,
+        },
+    },
 ];
 
 const router = createRouter({
