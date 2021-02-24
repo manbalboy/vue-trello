@@ -19,6 +19,7 @@ module.exports = {
 		bracketSpacing: true,
 		arrowParens: 'avoid',
 		endOfLine: 'auto',
+		htmlWhitespaceSensitivity: 'ignore',
 	  }]
 	},
 	parserOptions: {
