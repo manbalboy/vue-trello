@@ -3,12 +3,19 @@ import Home from '@/components/Home.vue';
 import Login from '@/components/Login.vue';
 import NotFound from '@/components/NotFound.vue';
 import Board from '@/components/Board.vue';
+import Card from '@/components/Card.vue';
 
 const routes = [
-    { path: '', redirect: { name: 'home' } },
-    { path: '/home', name: 'home', component: Home },
-    { path: '/login', name: 'login', component: Login },
-    { path: '/b/:bid', name: 'login', component: Board },
+    { path: '', redirect: { name: 'Home' } },
+    { path: '/home', name: 'Home', component: Home },
+    { path: '/login', name: 'Login', component: Login },
+    {
+        path: '/b/:bid',
+        name: 'Board',
+        component: Board,
+        children: [{ path: 'c/:cid', name: 'Card', component: Card }],
+    },
+
     {
         // vue 2에서는 '*' 만 해도 됨 vue 3 에서는 다음과 같이 동작
         path: '/:catchAll(.*)',

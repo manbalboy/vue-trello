@@ -1,5 +1,11 @@
 <template>
-    <div>Board : bid = {{ bid }}</div>
+    <div>
+        Board : bid = {{ bid }}
+        <router-link :to="`/b/${bid}/c/1`">Card1</router-link>
+        <router-link :to="`/b/${bid}/c/2`">Card2</router-link>
+        <hr />
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
