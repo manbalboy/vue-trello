@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { auth, setAuthInheader } from '@/api/index.js';
+import { auth, setAuthInHeader } from '@/api/index.js';
 export default {
     data() {
         return {
@@ -60,12 +60,12 @@ export default {
             auth.login(this.email, this.password)
                 .then(data => {
                     localStorage.setItem('token', data.accessToken);
-                    setAuthInheader(data.accessToken);
+                    setAuthInHeader(data.accessToken);
                     console.log(' >>>>> ', this.rPath);
                     this.$router.push(this.rPath);
                 })
                 .catch(err => {
-                    console.log(err);
+                    this.error = err.data.error;
                 });
         },
     },
