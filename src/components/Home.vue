@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { board } from '@/api/index.js';
+import { board, setAuthInHeader } from '@/api/index.js';
 export default {
     data() {
         return {
@@ -33,6 +33,10 @@ export default {
     },
 
     created() {
+        const { token } = localStorage;
+        if (token) {
+            setAuthInHeader(token);
+        }
         this.fetchData();
     },
 
