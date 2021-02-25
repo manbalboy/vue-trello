@@ -5,10 +5,9 @@
             Board List :
             <div v-if="isLoading">Loading ....</div>
             <div v-else>
-                Api result :{{ apiRes }}
-                <br />
-                <br />
-                <div v-if="err">err : {{ err }}</div>
+                <div v-for="b in boards" :key="b.id">
+                    {{ b }}
+                </div>
             </div>
             <ul>
                 <li>
@@ -28,7 +27,7 @@ export default {
     data() {
         return {
             isLoading: true,
-            apiRes: '',
+            boards: '',
             err: '',
         };
     },
@@ -40,6 +39,19 @@ export default {
     methods: {
         fetchData() {
             this.isLoading = true;
+            axios
+                .get('http://localhost:3000/boards')
+                .then(response => {
+                    this.boards = response;
+                })
+                .catch(err => {
+                    this.err = err;
+                    this.$router.replace('/login');
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+
             // const req = new XMLHttpRequest();
             // req.open('GET', 'http://localhost:3000/health');
             // req.send();
@@ -51,18 +63,6 @@ export default {
             //         response: JSON.parse(req.response),
             //     };
             // });
-
-            axios
-                .get('http://localhost:3000/health')
-                .then(response => {
-                    this.apiRes = response;
-                })
-                .catch(err => {
-                    this.err = err;
-                })
-                .finally(() => {
-                    this.isLoading = false;
-                });
         },
     },
 };
