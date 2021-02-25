@@ -19,6 +19,7 @@ export default {
             isLoding: true,
         };
     },
+
     created() {
         this.fetchData();
     },

@@ -25,8 +25,10 @@ const request = (method, url, data) => {
         });
 };
 
-export const board = {
+const board = {
     fetch() {
         return request('get', '/boards');
     },
 };
+
+export { board };
