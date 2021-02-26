@@ -59,7 +59,7 @@ export default {
                 .then(data => {
                     this.boards = data.list;
                 })
-                .finally(_ => {
+                .finally(() => {
                     this.loading = false;
                 });
         },
@@ -68,7 +68,7 @@ export default {
         },
         onAddBoard(title) {
             console.log(title);
-            board.create(title).then(data => this.fetchData());
+            board.create(title).then(() => this.fetchData());
         },
     },
 };
