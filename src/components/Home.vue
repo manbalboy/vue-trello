@@ -24,18 +24,13 @@
             </div>
         </div>
         test: {{ isAddBoard }}
-        <AddBoard
-            v-if="isAddBoard"
-            @close="isAddBoard = false"
-            @submit="onAddBoard"
-        />
+        <AddBoard v-if="isAddBoard" @close="isAddBoard = false" />
     </div>
 </template>
 
 <script>
-import { board } from '../api';
 import AddBoard from './AddBoard.vue';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
     components: {
         AddBoard,
@@ -43,12 +38,11 @@ export default {
     data() {
         return {
             loading: false,
-            boards: [],
             error: '',
         };
     },
     computed: {
-        ...mapState(['isAddBoard']),
+        ...mapState(['isAddBoard', 'boards']),
     },
     created() {
         this.fetchData();
@@ -59,21 +53,13 @@ export default {
         });
     },
     methods: {
+        ...mapActions(['FETCH_BOARDS']),
         ...mapMutations(['SET_IS_ADD_BOARD']),
         fetchData() {
             this.loading = true;
-            board
-                .fetch()
-                .then(data => {
-                    this.boards = data.list;
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-
-        onAddBoard() {
-            this.fetchData();
+            this.FETCH_BOARDS().finally(() => {
+                this.loading = false;
+            });
         },
     },
 };
