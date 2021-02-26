@@ -7,18 +7,14 @@
                 v-for="b in boards"
                 :key="b.id"
                 :data-bgcolor="b.bgColor"
-                :ref="setItemRef"
+                ref="boardItem"
             >
                 <router-link :to="`/b/${b.id}`">
                     <div class="board-item-title">{{ b.title }}</div>
                 </router-link>
             </div>
             <div class="board-item board-item-new">
-                <a
-                    class="new-board-btn"
-                    href="javascript;void(0);"
-                    @click.prevent="addBoard"
-                >
+                <a class="new-board-btn" href="" @click.prevent="addBoard">
                     Create new board...
                 </a>
             </div>
@@ -27,28 +23,18 @@
             v-if="isAddBoard"
             @close="isAddBoard = false"
             @submit="onAddBoard"
-        ></AddBoard>
+        />
     </div>
 </template>
 
 <script>
-import { board, setAuthInHeader } from '@/api';
-import AddBoard from '@/components/AddBoard.vue';
-export default {
-    setup() {
-        let itemRefs = [];
-        const setItemRef = el => {
-            if (el) {
-                itemRefs.push(el);
-            }
-        };
+import { board } from '../api';
+import AddBoard from './AddBoard.vue';
 
-        return {
-            setItemRef,
-            itemRefs,
-        };
+export default {
+    components: {
+        AddBoard,
     },
-    components: { AddBoard },
     data() {
         return {
             loading: false,
@@ -58,13 +44,10 @@ export default {
         };
     },
     created() {
-        const { token } = localStorage;
-        if (token) setAuthInHeader(token);
         this.fetchData();
     },
     updated() {
-        // this.boardItem.style.backgroundColor = this.boardItem.dataset.bgcolor;
-        this.itemRefs.forEach(el => {
+        this.$refs.boardItem.forEach(el => {
             el.style.backgroundColor = el.dataset.bgcolor;
         });
     },
@@ -85,12 +68,7 @@ export default {
         },
         onAddBoard(title) {
             console.log(title);
-            board
-                .create(title)
-                .then(() => this.fetchData())
-                .catch(err => {
-                    console.log(err);
-                });
+            board.create(title).then(data => this.fetchData());
         },
     },
 };

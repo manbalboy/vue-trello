@@ -1,16 +1,10 @@
 import axios from 'axios';
-import router from '@/router/index.js';
+import router from '../router';
 
 const DOMAIN = 'http://localhost:3000';
 const UNAUTHORIZED = 401;
 const onUnauthorized = () => {
     router.push(`/login?rPath=${encodeURIComponent(location.pathname)}`);
-};
-
-const setAuthInHeader = token => {
-    axios.defaults.headers.common['Authorization'] = token
-        ? `Bearer ${token}`
-        : '';
 };
 
 const request = (method, url, data) => {
@@ -21,17 +15,22 @@ const request = (method, url, data) => {
     })
         .then(result => result.data)
         .catch(result => {
-            // console.log('>>>', result);
             const { status } = result.response;
-            // console.log('>>>', status);
-            if (status === UNAUTHORIZED) {
-                onUnauthorized();
-            }
+            if (status === UNAUTHORIZED) onUnauthorized();
             throw result.response;
         });
 };
 
-const board = {
+export const setAuthInHeader = token => {
+    axios.defaults.headers.common['Authorization'] = token
+        ? `Bearer ${token}`
+        : null;
+};
+
+const { token } = localStorage;
+if (token) setAuthInHeader(token);
+
+export const board = {
     fetch() {
         return request('get', '/boards');
     },
@@ -39,11 +38,8 @@ const board = {
         return request('post', '/boards', { title });
     },
 };
-
-const auth = {
+export const auth = {
     login(email, password) {
         return request('post', '/login', { email, password });
     },
 };
-
-export { board, auth, setAuthInHeader };

@@ -4,17 +4,15 @@
             <router-link to="/">Home</router-link>
         </div>
         <div class="header-auth">
-            <a href="javascript;" v-if="isAuth" @click.prevent="logout">
-                Logout
-            </a>
-            <router-link to="/login" v-else>Login</router-link>
-            <!-- <a>Logout</a> -->
+            <a href="" v-if="isAuth" @click.prevent="logout">Logout</a>
+            <router-link v-else to="/login">Login</router-link>
         </div>
     </nav>
 </template>
 
 <script>
-import { setAuthInHeader } from '@/api/index.js';
+import { setAuthInHeader } from '../api';
+
 export default {
     computed: {
         isAuth() {
