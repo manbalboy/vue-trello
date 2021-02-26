@@ -23,6 +23,10 @@ const mutations = {
         delete localStorage.token;
         api.setAuthInHeader(null);
     },
+
+    SET_BOARD(state, board) {
+        state.board = board;
+    },
 };
 
 export default mutations;

@@ -1,7 +1,7 @@
 import * as api from '@/api';
 const actions = {
     ADD_BOARD(context, { title }) {
-        return api.board.create(title);
+        return api.board.create(title).then(data => data.item);
     },
 
     FETCH_BOARDS(context) {
@@ -20,6 +20,12 @@ const actions = {
         return api.auth
             .login(email, password)
             .then(({ accessToken }) => context.commit('LOGIN', accessToken));
+    },
+
+    FETCH_BOARD(context, { id }) {
+        return api.board.fetch(id).then(data => {
+            context.commit('SET_BOARD', data.item);
+        });
     },
 };
 export default actions;
