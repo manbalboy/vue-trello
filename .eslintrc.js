@@ -18,8 +18,8 @@ module.exports = {
 		// printWidth: 120,
 		bracketSpacing: true,
 		arrowParens: 'avoid',
-		endOfLine: 'auto',
-		htmlWhitespaceSensitivity: 'ignore',
+		// endOfLine: 'auto',
+		// htmlWhitespaceSensitivity: 'ignore',
 	  }]
 	},
 	parserOptions: {
