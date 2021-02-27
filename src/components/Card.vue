@@ -6,8 +6,12 @@
                     class="form-control"
                     type="text"
                     :value="card.title"
-                    readonly
+                    :readonly="!toggleTitle"
+                    @click="toggleTitle = true"
+                    @blur="onBlurTitle"
+                    ref="inputTitle"
                 />
+                {{ card }}
             </div>
             <a class="modal-close-btn" href="" @click.prevent="onClose">
                 &times;
@@ -20,8 +24,11 @@
                 cols="30"
                 rows="3"
                 placeholder="Add a more detailed description..."
-                readonly
                 v-model="card.description"
+                :readonly="!toggleDescription"
+                @click="toggleDescription = true"
+                @blur="onBlurDescription"
+                ref="inputDescription"
             >
             </textarea>
         </div>
@@ -35,8 +42,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
     data() {
         return {
-            cid: 0,
-            loading: false,
+            toggleTitle: false,
+            toggleDescription: false,
         };
     },
     computed: {
@@ -46,13 +53,33 @@ export default {
         Modal,
     },
     created() {
-        const id = this.$route.params.cid;
-        this.FETCH_CARD({ id });
+        this.fetchCard();
     },
     methods: {
-        ...mapActions(['FETCH_CARD']),
+        ...mapActions(['FETCH_CARD', 'UPDATE_CARD']),
         onClose() {
             this.$router.push(`/b/${this.board.id}`);
+        },
+        fetchCard() {
+            const id = this.$route.params.cid;
+            this.FETCH_CARD({ id });
+        },
+        onBlurTitle() {
+            this.toggleTitle = false;
+            const title = this.$refs.inputTitle.value.trim();
+            if (!title) return;
+
+            this.UPDATE_CARD({ id: this.card.id, title }).then(() => {
+                this.fetchCard();
+            });
+        },
+        onBlurDescription() {
+            this.toggleDescription = false;
+            const description = this.$refs.inputDescription.value.trim();
+            if (!description) return;
+            this.UPDATE_CARD({ id: this.card.id, description }).then(() => {
+                this.fetchCard();
+            });
         },
     },
 };

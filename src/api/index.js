@@ -8,6 +8,7 @@ const onUnauthorized = () => {
 };
 
 const request = (method, url, data) => {
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
     return axios({
         method,
         url: DOMAIN + url,
@@ -49,5 +50,9 @@ export const card = {
 
     fetch(id) {
         return request('get', `/cards/${id}`);
+    },
+
+    update(id, payload) {
+        return request('put', `/cards/${id}`, payload);
     },
 };
