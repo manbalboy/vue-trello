@@ -27,6 +27,9 @@ const actions = {
             context.commit('SET_BOARD', data.item);
         });
     },
+    DELETE_BOARD(context, { id }) {
+        return api.board.destory(id);
+    },
 
     ADD_CARD(context, { title, listId, pos }) {
         return api.card.create(title, listId, pos).then(() => {
