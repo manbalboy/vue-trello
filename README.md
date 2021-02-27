@@ -1,5 +1,49 @@
 # vue-trello
 
+## eslint 
+```
+//settings.json
+{
+  // ESLint
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  // don't format on save
+  "editor.formatOnSave": false
+}
+```
+vue-cli 설치 
+```
+npm i -g @vue/cli
+```
+eslint 설치 
+```
+npm i -g eslint
+```
+
+
 ## Project setup
 vscode 로 개발 
 ```

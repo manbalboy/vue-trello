@@ -84,24 +84,29 @@ export default {
     display: inline-block;
     color: #fff;
 }
+
 .board-header-btn:hover,
 .board-header-btn:focus {
     background-color: rgba(0, 0, 0, 0.15);
     cursor: pointer;
 }
+
 .board-title {
     font-weight: 700;
     font-size: 18px;
 }
+
 .show-menu {
     font-size: 14px;
     position: absolute;
     right: 15px;
 }
+
 .list-section-wrapper {
     flex-grow: 1;
     position: relative;
 }
+
 .list-section {
     position: absolute;
     top: 0;
@@ -113,6 +118,7 @@ export default {
     white-space: nowrap;
     padding: 0 10px;
 }
+
 .list-wrapper {
     display: inline-block;
     height: 100%;
@@ -120,9 +126,11 @@ export default {
     vertical-align: top;
     margin-right: 5px;
 }
+
 .card-item.gu-transit {
     background-color: #555 !important;
 }
+
 .card-item.gu-mirror {
     opacity: 1 !important;
     background-color: #fff !important;
