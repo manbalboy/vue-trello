@@ -1,18 +1,22 @@
 <template>
-    <div>
+    <Modal>
         Card
         <div v-if="loading">loading card ...</div>
         <div v-else>cid: {{ cid }}</div>
-    </div>
+    </Modal>
 </template>
 
 <script>
+import Modal from './Modal.vue';
 export default {
     data() {
         return {
             cid: 0,
             loading: false,
         };
+    },
+    components: {
+        Modal,
     },
     watch: {
         $route: {
