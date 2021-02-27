@@ -1,5 +1,5 @@
 <template>
-    <nav class="header">
+    <nav class="header" :style="{ backgroundColor: navbarColor }">
         <div class="header-logo">
             <router-link to="/">Home</router-link>
         </div>
@@ -11,23 +11,38 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
     computed: {
         ...mapGetters(['isAuth']),
+        ...mapState(['bodyColor', 'navbarColor']),
     },
+
+    mounted() {
+        this.updateTheme();
+    },
+    watch: {
+        bodyColor: 'updateTheme',
+    },
+
     methods: {
         ...mapMutations(['LOGOUT']),
         logout() {
             this.LOGOUT();
             this.$router.push('/login');
         },
+        updateTheme() {
+            const body = document.querySelector('body');
+            const container = document.querySelector('.container');
+            if (body) body.style.backgroundColor = this.bodyColor;
+            if (container) container.style.backgroundColor = this.bodyColor;
+        },
     },
 };
 </script>
 
-<style>
+<style scoped>
 .header {
     flex: none;
     background-color: rgba(0, 0, 0, 0.15);
