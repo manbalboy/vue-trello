@@ -33,5 +33,10 @@ const actions = {
             context.dispatch('FETCH_BOARD', { id: context.state.board.id });
         });
     },
+    FETCH_CARD(context, { id }) {
+        return api.card.fetch(id).then(data => {
+            context.commit('SET_CARD', data.item);
+        });
+    },
 };
 export default actions;
