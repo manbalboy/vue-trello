@@ -47,5 +47,11 @@ const actions = {
                 context.dispatch('FETCH_BOARD', { id: context.state.board.id });
             });
     },
+
+    DELETE_CARD(context, { id }) {
+        return api.card.destory(id).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
 };
 export default actions;
