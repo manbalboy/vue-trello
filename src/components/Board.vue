@@ -4,6 +4,13 @@
             <div class="board">
                 <div class="board-header">
                     <span class="board-title">{{ board.title }}</span>
+                    <a
+                        href=""
+                        class="board-header-btn show-menu"
+                        @click.prevent="onShowSettings"
+                    >
+                        ... Show Menu
+                    </a>
                 </div>
 
                 <div class="list-section-wrapper">
@@ -19,6 +26,7 @@
                 </div>
             </div>
         </div>
+        <BoardSettings v-if="isShowBoardSettings"></BoardSettings>
         <router-view></router-view>
     </div>
 </template>
@@ -27,6 +35,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex';
 import List from '@/components/List.vue';
 import dragger from '@/utils/dragger.js';
+import BoardSettings from '@/components/BoardSettings.vue';
 export default {
     data() {
         return {
@@ -35,27 +44,31 @@ export default {
             cDragger: null,
         };
     },
-    components: { List },
+    components: { List, BoardSettings },
     created() {
         this.fetchData().then(() => {
             this.SET_THEME(this.board.bgColor);
         });
+        this.SET_IS_SHOW_BOARD_SETTINGS('false');
     },
     updated() {
         this.setCardDragabble();
     },
     computed: {
-        ...mapState(['board']),
+        ...mapState(['board', 'isShowBoardSettings']),
     },
 
     methods: {
         ...mapActions(['FETCH_BOARD', 'UPDATE_CARD']),
-        ...mapMutations(['SET_THEME']),
+        ...mapMutations(['SET_THEME', 'SET_IS_SHOW_BOARD_SETTINGS']),
         fetchData() {
             this.loading = true;
             return this.FETCH_BOARD({ id: this.$route.params.bid }).then(() => {
                 this.loading = false;
             });
+        },
+        onShowSettings() {
+            this.SET_IS_SHOW_BOARD_SETTINGS('true');
         },
         setCardDragabble() {
             if (this.cDragger) {
