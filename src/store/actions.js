@@ -27,5 +27,11 @@ const actions = {
             context.commit('SET_BOARD', data.item);
         });
     },
+
+    ADD_CARD(context, { title, listId, pos }) {
+        return api.card.create(title, listId, pos).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
 };
 export default actions;

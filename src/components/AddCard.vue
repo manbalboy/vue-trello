@@ -22,12 +22,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
             inputTitle: '',
         };
     },
+    props: ['listId'],
     computed: {
         invalidInput() {
             return !this.inputTitle.trim();
@@ -43,7 +45,16 @@ export default {
             .removeEventListener('click', this.eventFn);
     },
     methods: {
-        onSubmit() {},
+        ...mapActions(['ADD_CARD']),
+        onSubmit() {
+            if (this.invalidInput) {
+                return;
+            }
+            const { inputTitle, listId } = this;
+            this.ADD_CARD({ title: inputTitle, listId }).finally(() => {
+                this.inputTitle = '';
+            });
+        },
         setupClickOutside() {
             document
                 .querySelector('body')
