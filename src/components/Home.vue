@@ -23,7 +23,6 @@
                 </a>
             </div>
         </div>
-        test: {{ isAddBoard }}
         <AddBoard v-if="isAddBoard" @close="isAddBoard = false" />
     </div>
 </template>
