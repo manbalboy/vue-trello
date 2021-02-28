@@ -12,15 +12,16 @@
                         @keyup.enter="onSubmitTitle"
                         @blur="onSubmitTitle"
                     />
-                    <span v-else class="board-title" @click="onClickTitle">{{
-                        board.title
-                    }}</span>
+                    <span v-else class="board-title" @click="onClickTitle">
+                        {{ board.title }}
+                    </span>
                     <a
                         class="board-header-btn show-menu"
                         href=""
                         @click.prevent="onShowSettings"
-                        >... Show Menu</a
                     >
+                        ... Show Menu
+                    </a>
                 </div>
                 <div class="list-section-wrapper">
                     <div class="list-section">
@@ -129,6 +130,9 @@ export default {
                     listId: wrapper.dataset.listId * 1,
                     pos: 65535,
                 };
+
+                console.log('targetCard>>> ', targetCard, wrapper);
+
                 const { prev, next } = dragger.sibling({
                     el,
                     wrapper,
