@@ -2,7 +2,7 @@
 
 ## eslint 
 ```
-//settings.json
+//settings.json 내용 안에 설정
 {
   // ESLint
   "eslint.validate": [
