@@ -62,7 +62,9 @@ export default {
             console.log();
             this.DELETE_BOARD({ id: this.board.id })
                 .then(() => this.SET_IS_SHOW_BOARD_SETTINGS(false))
-                .then(() => this.$router.push('/'));
+                .then(() =>
+                    this.$router.push(`${process.env.VUE_APP_BASE_URL}`),
+                );
         },
 
         onChangeTheme(el) {

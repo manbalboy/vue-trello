@@ -9,7 +9,7 @@
                 :data-bgcolor="b.bgColor"
                 ref="boardItem"
             >
-                <router-link :to="`/b/${b.id}`">
+                <router-link :to="`${baseUrl}/b/${b.id}`">
                     <div class="board-item-title">{{ b.title }}</div>
                 </router-link>
             </div>
@@ -42,6 +42,11 @@ export default {
     },
     computed: {
         ...mapState(['isAddBoard', 'boards']),
+        baseUrl() {
+            return process.env.NODE_ENV === 'production'
+                ? process.env.VUE_APP_BASE_URL
+                : '';
+        },
     },
     created() {
         this.fetchData();

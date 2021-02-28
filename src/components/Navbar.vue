@@ -1,11 +1,15 @@
 <template>
     <nav class="header" :style="{ backgroundColor: navbarColor }">
         <div class="header-logo">
-            <router-link to="/">Home</router-link>
+            <router-link :to="`${baseUrl}/`">
+                Home
+            </router-link>
         </div>
         <div class="header-auth">
             <a href="" v-if="isAuth" @click.prevent="logout">Logout</a>
-            <router-link v-else to="/login">Login</router-link>
+            <router-link v-else :to="`/login`">
+                Login
+            </router-link>
         </div>
     </nav>
 </template>
@@ -17,6 +21,11 @@ export default {
     computed: {
         ...mapGetters(['isAuth']),
         ...mapState(['bodyColor', 'navbarColor']),
+        baseUrl() {
+            return process.env.NODE_ENV === 'production'
+                ? process.env.VUE_APP_BASE_URL
+                : '';
+        },
     },
 
     mounted() {
@@ -30,7 +39,7 @@ export default {
         ...mapMutations(['LOGOUT']),
         logout() {
             this.LOGOUT();
-            this.$router.push('/login');
+            this.$router.push(`${process.env.VUE_APP_BASE_URL}/login`);
         },
         updateTheme() {
             const body = document.querySelector('body');

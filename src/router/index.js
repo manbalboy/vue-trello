@@ -10,7 +10,9 @@ import store from '@/store/index.js';
 Vue.use(VueRouter);
 
 const requireAuth = (to, from, next) => {
-    const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`;
+    const loginPath = `${
+        process.env.VUE_APP_BASE_URL
+    }/login?rPath=${encodeURIComponent(to.path)}`;
     store.getters.isAuth ? next() : next(loginPath);
 };
 
@@ -18,22 +20,22 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/',
+            path: `${process.env.VUE_APP_BASE_URL}`,
             component: Home,
             beforeEnter: requireAuth,
         },
         {
-            path: '/login',
+            path: `${process.env.VUE_APP_BASE_URL}/login`,
             component: Login,
         },
         {
-            path: '/b/:bid',
+            path: `${process.env.VUE_APP_BASE_URL}/b/:bid`,
             component: Board,
             beforeEnter: requireAuth,
             children: [{ path: 'c/:cid', component: Card }],
         },
         {
-            path: '*',
+            path: `${process.env.VUE_APP_BASE_URL}/*`,
             component: NotFound,
         },
     ],

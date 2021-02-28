@@ -53,14 +53,14 @@ export default {
         },
     },
     created() {
-        this.rPath = this.$route.query.rPath || '/';
+        this.rPath = this.$route.query.rPath || process.env.VUE_APP_BASE_URL;
     },
     methods: {
         ...mapActions(['LOGIN']),
         onSubmit() {
             this.LOGIN({ email: this.email, password: this.password })
                 .then(() => {
-                    this.$router.push(this.rPath);
+                    this.$router.push(`${this.rPath}`);
                 })
                 .catch(err => {
                     this.error = err.data.error;

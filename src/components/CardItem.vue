@@ -1,6 +1,6 @@
 <template>
     <div class="card-item" :data-card-id="data.id" :data-card-pos="data.pos">
-        <router-link :to="`/b/${boardId}/c/${data.id}`">
+        <router-link :to="`${baseUrl}/b/${boardId}/c/${data.id}`">
             <div>{{ data.title }}</div>
             <div class="card-item-meta" v-if="data.description">&equiv;</div>
         </router-link>
@@ -16,6 +16,11 @@ export default {
         ...mapState({
             boardId: state => state.board.id,
         }),
+        baseUrl() {
+            return process.env.NODE_ENV === 'production'
+                ? process.env.VUE_APP_BASE_URL
+                : '';
+        },
     },
     methods: {
         ...mapActions(['DELETE_CARD']),

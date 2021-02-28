@@ -57,7 +57,9 @@ export default {
     methods: {
         ...mapActions(['FETCH_CARD', 'UPDATE_CARD']),
         onClose() {
-            this.$router.push(`/b/${this.board.id}`);
+            this.$router.push(
+                `${process.env.VUE_APP_BASE_URL}/b/${this.board.id}`,
+            );
         },
         fetchCard() {
             const id = this.$route.params.cid;
