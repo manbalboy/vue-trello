@@ -7,7 +7,7 @@
             ref="inputTitle"
             v-model="inputTitle"
             @blur="restore"
-            @keyup="onSubmitTitle"
+            @keydown.enter="onSubmitTitle"
         />
         <a v-else href="" @click.prevent="onAddList">&plus; Add antoher List</a>
     </div>
