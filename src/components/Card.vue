@@ -11,7 +11,6 @@
                     @blur="onBlurTitle"
                     ref="inputTitle"
                 />
-                {{ card }}
             </div>
             <a class="modal-close-btn" href="" @click.prevent="onClose">
                 &times;
