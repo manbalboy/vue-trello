@@ -50,6 +50,12 @@ const actions = {
         });
     },
 
+    DELETE_LIST(context, { id }) {
+        return api.list.destory(id).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
+
     ADD_CARD(context, { title, listId, pos }) {
         return api.card.create(title, listId, pos).then(() => {
             context.dispatch('FETCH_BOARD', { id: context.state.board.id });
