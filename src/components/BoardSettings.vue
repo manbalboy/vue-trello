@@ -2,9 +2,9 @@
     <div class="board-menu">
         <div class="board-menu-header">
             <div class="header-title">Menu</div>
-            <a class="header-close-btn" href="" @click.prevent="onClose"
-                >&times;</a
-            >
+            <a class="header-close-btn" href="" @click.prevent="onClose">
+                &times;
+            </a>
         </div>
         <ul class="menu-list">
             <li><a href="" @click.prevent="onDeleteBoard">Delete Board</a></li>

@@ -66,11 +66,11 @@ export default {
     components: { List, BoardSettings },
 
     created() {
+        this.SET_IS_SHOW_BOARD_SETTINGS(false);
         this.fetchData().then(() => {
             this.SET_THEME(this.board.bgColor);
             this.inputTitle = this.board.title;
         });
-        this.SET_IS_SHOW_BOARD_SETTINGS('false');
     },
     updated() {
         this.setCardDragabble();
