@@ -3,7 +3,21 @@
         <div class="board-wrapper">
             <div class="board">
                 <div class="board-header">
-                    <span class="board-title">{{ board.title }}</span>
+                    <input
+                        class="form-control"
+                        v-if="isEditTitle"
+                        type="text"
+                        v-model="inputTitle"
+                        ref="inputTitle"
+                        @blur.prevent="onSubmitTitle"
+                        @keyup.enter="onSubmitTitle"
+                    />
+                    <span
+                        v-else
+                        class="board-title"
+                        @click.prevent="onClickTitle"
+                        >{{ board.title }}</span
+                    >
                     <a
                         href=""
                         class="board-header-btn show-menu"
@@ -42,24 +56,28 @@ export default {
             bid: 0,
             loading: false,
             cDragger: null,
+            isEditTitle: false,
+            inputTitle: '',
         };
     },
+    computed: {
+        ...mapState(['board', 'isShowBoardSettings']),
+    },
     components: { List, BoardSettings },
+
     created() {
         this.fetchData().then(() => {
             this.SET_THEME(this.board.bgColor);
+            this.inputTitle = this.board.title;
         });
         this.SET_IS_SHOW_BOARD_SETTINGS('false');
     },
     updated() {
         this.setCardDragabble();
     },
-    computed: {
-        ...mapState(['board', 'isShowBoardSettings']),
-    },
 
     methods: {
-        ...mapActions(['FETCH_BOARD', 'UPDATE_CARD']),
+        ...mapActions(['FETCH_BOARD', 'UPDATE_CARD', 'UPDATE_BOARD']),
         ...mapMutations(['SET_THEME', 'SET_IS_SHOW_BOARD_SETTINGS']),
         fetchData() {
             this.loading = true;
@@ -69,6 +87,17 @@ export default {
         },
         onShowSettings() {
             this.SET_IS_SHOW_BOARD_SETTINGS('true');
+        },
+        onClickTitle() {
+            this.isEditTitle = true;
+            this.$nextTick(() => this.$refs.inputTitle.focus());
+        },
+        onSubmitTitle() {
+            this.isEditTitle = false;
+            if (!this.inputTitle.trim()) return;
+            if (this.inputTitle === this.board.title) return;
+            const payload = { id: this.board.id, title: this.inputTitle };
+            this.UPDATE_BOARD(payload);
         },
         setCardDragabble() {
             if (this.cDragger) {
