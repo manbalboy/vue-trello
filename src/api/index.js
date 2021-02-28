@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from '../router';
 
-const DOMAIN = 'http://localhost:3000';
+const DOMAIN = 'http://java-coder.co.kr:18908';
 const UNAUTHORIZED = 401;
 const onUnauthorized = () => {
     router.push(`/login?rPath=${encodeURIComponent(location.pathname)}`);
@@ -34,6 +34,9 @@ export const board = {
     },
     create(title) {
         return request('post', '/boards', { title });
+    },
+    update(id, payload) {
+        return request('put', `/boards/${id}`, payload);
     },
     destory(id) {
         return request('delete', `/boards/${id}`);

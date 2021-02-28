@@ -27,6 +27,13 @@ const actions = {
             context.commit('SET_BOARD', data.item);
         });
     },
+
+    UPDATE_BOARD(context, { id, title, bgColor }) {
+        return api.board.update(id, { title, bgColor }).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
+
     DELETE_BOARD(context, { id }) {
         return api.board.destory(id);
     },

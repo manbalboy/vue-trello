@@ -8,6 +8,31 @@
         </div>
         <ul class="menu-list">
             <li><a href="" @click.prevent="onDeleteBoard">Delete Board</a></li>
+            <li>
+                Change Background
+            </li>
+            <div class="color-picker">
+                <a
+                    href=""
+                    data-value="rgb(0,121,191)"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="rgb(210,141,52)"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#9ee69e"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#ff906e"
+                    @click.prevent="onChangeTheme"
+                ></a>
+            </div>
         </ul>
     </div>
 </template>
@@ -19,9 +44,15 @@ export default {
     computed: {
         ...mapState(['board']),
     },
+    mounted() {
+        Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
+            console.log(el);
+            el.style.backgroundColor = el.dataset.value;
+        });
+    },
     methods: {
-        ...mapMutations(['SET_IS_SHOW_BOARD_SETTINGS']),
-        ...mapActions(['DELETE_BOARD']),
+        ...mapMutations(['SET_IS_SHOW_BOARD_SETTINGS', 'SET_THEME']),
+        ...mapActions(['DELETE_BOARD', 'UPDATE_BOARD']),
         onClose() {
             this.SET_IS_SHOW_BOARD_SETTINGS(false);
         },
@@ -32,6 +63,19 @@ export default {
             this.DELETE_BOARD({ id: this.board.id })
                 .then(() => this.SET_IS_SHOW_BOARD_SETTINGS(false))
                 .then(() => this.$router.push('/'));
+        },
+
+        onChangeTheme(el) {
+            console.log(el);
+
+            const bgColor = el.target.dataset.value;
+
+            console.log('bgColor', bgColor);
+            this.UPDATE_BOARD({
+                id: this.board.id,
+                title: this.board.title,
+                bgColor,
+            }).then(() => this.SET_THEME(bgColor));
         },
     },
 };
@@ -98,5 +142,6 @@ export default {
     width: 49%;
     height: 100px;
     border-radius: 8px;
+    margin: 1px;
 }
 </style>
