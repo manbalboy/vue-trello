@@ -44,6 +44,12 @@ const actions = {
         });
     },
 
+    UPDATE_LIST(context, { title, id, pos }) {
+        return api.list.update(id, { title, pos }).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
+
     ADD_CARD(context, { title, listId, pos }) {
         return api.card.create(title, listId, pos).then(() => {
             context.dispatch('FETCH_BOARD', { id: context.state.board.id });
