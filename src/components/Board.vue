@@ -47,10 +47,10 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import List from './List.vue';
-import BoardSettings from './BoardSettings.vue';
-import AddList from './AddList.vue';
-import dragger from '../utils/dragger';
+import List from '@/components/List.vue';
+import BoardSettings from '@/components/BoardSettings.vue';
+import AddList from '@/components/AddList.vue';
+import dragger from '@/utils/dragger';
 
 export default {
     components: {

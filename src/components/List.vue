@@ -58,7 +58,7 @@ export default {
         CardItem,
     },
     methods: {
-        ...mapActions(['UPDATE_LIST', 'DEELET_LIST']),
+        ...mapActions(['UPDATE_LIST', 'DELETE_LIST']),
         onClickTitle() {
             this.isEditTitle = true;
             this.$nextTick(() => this.$refs.inputTitle.focus());
@@ -77,7 +77,7 @@ export default {
         },
         onDeleteList() {
             if (!window.confirm(`Delete ${this.data.title} list?`)) return;
-            this.DEELET_LIST({ id: this.data.id });
+            this.DELETE_LIST({ id: this.data.id });
         },
     },
     created() {

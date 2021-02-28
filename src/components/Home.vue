@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import AddBoard from './AddBoard.vue';
+import AddBoard from '@/components/AddBoard.vue';
 import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
     components: {
