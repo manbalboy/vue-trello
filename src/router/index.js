@@ -34,6 +34,10 @@ const router = new VueRouter({
             children: [{ path: 'c/:cid', component: Card }],
         },
         {
+            path: '/err',
+            component: NotFound,
+        },
+        {
             path: '*',
             component: NotFound,
         },

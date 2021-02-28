@@ -29,7 +29,32 @@
                 ></a>
                 <a
                     href=""
+                    data-value="#f7e09e"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#b0f0aa"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#c7dded"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
                     data-value="#ff906e"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#E0FFDB"
+                    @click.prevent="onChangeTheme"
+                ></a>
+                <a
+                    href=""
+                    data-value="#FAF4C0"
                     @click.prevent="onChangeTheme"
                 ></a>
             </div>
