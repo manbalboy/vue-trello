@@ -16,6 +16,7 @@ const requireAuth = (to, from, next) => {
 
 const router = new VueRouter({
     mode: 'history',
+    base: process.env.VUE_APP_ROUTER_BASE_URL,
     routes: [
         {
             path: '/',

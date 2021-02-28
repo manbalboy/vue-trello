@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from '@/router';
 
-const DOMAIN = 'http://java-coder.co.kr:18908';
+const DOMAIN = process.env.VUE_APP_API_URL;
 const UNAUTHORIZED = 401;
 const onUnauthorized = () => {
     router.push(`/login?rPath=${encodeURIComponent(location.pathname)}`);
