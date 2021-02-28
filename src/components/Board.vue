@@ -36,6 +36,9 @@
                         >
                             <List :data="list"></List>
                         </div>
+                        <div class="list-wrapper">
+                            <AddList></AddList>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,6 +53,8 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 import List from '@/components/List.vue';
 import dragger from '@/utils/dragger.js';
 import BoardSettings from '@/components/BoardSettings.vue';
+
+import AddList from '@/components/AddList.vue';
 export default {
     data() {
         return {
@@ -63,7 +68,7 @@ export default {
     computed: {
         ...mapState(['board', 'isShowBoardSettings']),
     },
-    components: { List, BoardSettings },
+    components: { List, BoardSettings, AddList },
 
     created() {
         this.SET_IS_SHOW_BOARD_SETTINGS(false);

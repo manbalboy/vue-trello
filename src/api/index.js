@@ -28,6 +28,12 @@ export const setAuthInHeader = token => {
         : null;
 };
 
+export const auth = {
+    login(email, password) {
+        return request('post', '/login', { email, password });
+    },
+};
+
 export const board = {
     fetch(id) {
         return id ? request('get', `/boards/${id}`) : request('get', '/boards');
@@ -42,10 +48,9 @@ export const board = {
         return request('delete', `/boards/${id}`);
     },
 };
-
-export const auth = {
-    login(email, password) {
-        return request('post', '/login', { email, password });
+export const list = {
+    create(payload) {
+        return request('post', '/lists', payload);
     },
 };
 

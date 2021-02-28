@@ -38,6 +38,12 @@ const actions = {
         return api.board.destory(id);
     },
 
+    ADD_LIST(context, { title, boardId, pos }) {
+        return api.list.create({ title, boardId, pos }).then(() => {
+            context.dispatch('FETCH_BOARD', { id: context.state.board.id });
+        });
+    },
+
     ADD_CARD(context, { title, listId, pos }) {
         return api.card.create(title, listId, pos).then(() => {
             context.dispatch('FETCH_BOARD', { id: context.state.board.id });
