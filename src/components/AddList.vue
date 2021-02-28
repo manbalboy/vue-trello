@@ -6,8 +6,8 @@
             class="form-control"
             ref="inputTitle"
             v-model="inputTitle"
-            @blur.prevent="restore"
-            @keyup.enter="onSubmitTitle"
+            @blur="restore"
+            @keyup="onSubmitTitle"
         />
         <a v-else href="" @click.prevent="onAddList">&plus; Add antoher List</a>
     </div>

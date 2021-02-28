@@ -9,89 +9,97 @@
                         type="text"
                         v-model="inputTitle"
                         ref="inputTitle"
-                        @blur.prevent="onSubmitTitle"
                         @keyup.enter="onSubmitTitle"
+                        @blur="onSubmitTitle"
                     />
-                    <span
-                        v-else
-                        class="board-title"
-                        @click.prevent="onClickTitle"
-                        >{{ board.title }}</span
-                    >
+                    <span v-else class="board-title" @click="onClickTitle">{{
+                        board.title
+                    }}</span>
                     <a
-                        href=""
                         class="board-header-btn show-menu"
+                        href=""
                         @click.prevent="onShowSettings"
+                        >... Show Menu</a
                     >
-                        ... Show Menu
-                    </a>
                 </div>
-
                 <div class="list-section-wrapper">
                     <div class="list-section">
                         <div
                             class="list-wrapper"
                             v-for="list in board.lists"
-                            v-bind:key="list.pos"
+                            :key="list.pos"
+                            :data-list-id="list.id"
                         >
-                            <List :data="list"></List>
+                            <List :data="list" />
                         </div>
                         <div class="list-wrapper">
-                            <AddList></AddList>
+                            <AddList />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <BoardSettings v-if="isShowBoardSettings"></BoardSettings>
+        <BoardSettings v-if="isShowBoardSettings" />
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
-import List from '@/components/List.vue';
-import dragger from '@/utils/dragger.js';
-import BoardSettings from '@/components/BoardSettings.vue';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import List from './List.vue';
+import BoardSettings from './BoardSettings.vue';
+import AddList from './AddList.vue';
+import dragger from '../utils/dragger';
 
-import AddList from '@/components/AddList.vue';
 export default {
+    components: {
+        List,
+        BoardSettings,
+        AddList,
+    },
     data() {
         return {
             bid: 0,
             loading: false,
             cDragger: null,
+            lDragger: null,
             isEditTitle: false,
             inputTitle: '',
         };
     },
     computed: {
-        ...mapState(['board', 'isShowBoardSettings']),
+        ...mapState({
+            board: 'board',
+            isShowBoardSettings: 'isShowBoardSettings',
+        }),
     },
-    components: { List, BoardSettings, AddList },
-
     created() {
-        this.SET_IS_SHOW_BOARD_SETTINGS(false);
         this.fetchData().then(() => {
-            this.SET_THEME(this.board.bgColor);
             this.inputTitle = this.board.title;
+            this.SET_THEME(this.board.bgColor);
         });
+        this.SET_IS_SHOW_BOARD_SETTINGS(false);
     },
     updated() {
         this.setCardDragabble();
+        this.setListDragabble();
     },
-
     methods: {
-        ...mapActions(['FETCH_BOARD', 'UPDATE_CARD', 'UPDATE_BOARD']),
         ...mapMutations(['SET_THEME', 'SET_IS_SHOW_BOARD_SETTINGS']),
+        ...mapActions([
+            'FETCH_BOARD',
+            'UPDATE_CARD',
+            'UPDATE_BOARD',
+            'UPDATE_LIST',
+        ]),
         fetchData() {
             this.loading = true;
-            return this.FETCH_BOARD({ id: this.$route.params.bid }).then(() => {
-                this.loading = false;
-            });
+            return this.FETCH_BOARD({ id: this.$route.params.bid }).then(
+                () => (this.loading = false),
+            );
         },
         onShowSettings() {
-            this.SET_IS_SHOW_BOARD_SETTINGS('true');
+            this.SET_IS_SHOW_BOARD_SETTINGS(true);
         },
         onClickTitle() {
             this.isEditTitle = true;
@@ -99,23 +107,27 @@ export default {
         },
         onSubmitTitle() {
             this.isEditTitle = false;
-            if (!this.inputTitle.trim()) return;
-            if (this.inputTitle === this.board.title) return;
-            const payload = { id: this.board.id, title: this.inputTitle };
-            this.UPDATE_BOARD(payload);
+
+            this.inputTitle = this.inputTitle.trim();
+            if (!this.inputTitle) return;
+
+            const id = this.board.id;
+            const title = this.inputTitle;
+            if (title === this.board.title) return;
+
+            this.UPDATE_BOARD({ id, title });
         },
         setCardDragabble() {
-            if (this.cDragger) {
-                this.cDragger.destroy();
-            }
-            const test = this.$el;
+            if (this.cDragger) this.cDragger.destroy();
+
             this.cDragger = dragger.init(
-                Array.from(test.querySelectorAll('.card-list')),
+                Array.from(this.$el.querySelectorAll('.card-list')),
             );
             this.cDragger.on('drop', (el, wrapper) => {
                 const targetCard = {
                     id: el.dataset.cardId * 1,
-                    pos: 65335,
+                    listId: wrapper.dataset.listId * 1,
+                    pos: 65535,
                 };
                 const { prev, next } = dragger.sibling({
                     el,
@@ -126,14 +138,43 @@ export default {
                     type: 'card',
                 });
 
-                if (!prev && next) {
-                    targetCard.pos = next.pos / 2;
-                } else if (prev && !next) {
-                    targetCard.pos = prev.pos * 2;
-                } else if (prev && next) {
+                if (!prev && next) targetCard.pos = next.pos / 2;
+                else if (!next && prev) targetCard.pos = prev.pos * 2;
+                else if (next && prev)
                     targetCard.pos = (prev.pos + next.pos) / 2;
-                }
                 this.UPDATE_CARD(targetCard);
+            });
+        },
+        setListDragabble() {
+            if (this.lDragger) this.lDragger.destroy();
+
+            const options = {
+                invalid: (el, handle) => !/^list/.test(handle.className),
+            };
+            this.lDragger = dragger.init(
+                Array.from(this.$el.querySelectorAll('.list-section')),
+                options,
+            );
+
+            this.lDragger.on('drop', (el, wrapper) => {
+                const targetList = {
+                    id: el.dataset.listId * 1,
+                    pos: 65535,
+                };
+                const { prev, next } = dragger.sibling({
+                    el,
+                    wrapper,
+                    candidates: Array.from(wrapper.querySelectorAll('.list')),
+                    type: 'list',
+                });
+
+                console.log('prev, next>>>', prev, next);
+
+                if (!prev && next) targetList.pos = next.pos / 2;
+                else if (!next && prev) targetList.pos = prev.pos * 2;
+                else if (next && prev)
+                    targetList.pos = (prev.pos + next.pos) / 2;
+                this.UPDATE_LIST(targetList);
             });
         },
     },
@@ -171,29 +212,24 @@ export default {
     display: inline-block;
     color: #fff;
 }
-
 .board-header-btn:hover,
 .board-header-btn:focus {
     background-color: rgba(0, 0, 0, 0.15);
     cursor: pointer;
 }
-
 .board-title {
     font-weight: 700;
     font-size: 18px;
 }
-
 .show-menu {
     font-size: 14px;
     position: absolute;
     right: 15px;
 }
-
 .list-section-wrapper {
     flex-grow: 1;
     position: relative;
 }
-
 .list-section {
     position: absolute;
     top: 0;
@@ -205,7 +241,6 @@ export default {
     white-space: nowrap;
     padding: 0 10px;
 }
-
 .list-wrapper {
     display: inline-block;
     height: 100%;
@@ -213,11 +248,9 @@ export default {
     vertical-align: top;
     margin-right: 5px;
 }
-
 .card-item.gu-transit {
     background-color: #555 !important;
 }
-
 .card-item.gu-mirror {
     opacity: 1 !important;
     background-color: #fff !important;
