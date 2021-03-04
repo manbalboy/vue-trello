@@ -37,38 +37,38 @@
 </template>
 
 <script>
-import Modal from '@/components/Modal.vue';
+    import Modal from '@/components/Modal.vue';
 
-import { mapMutations, mapActions } from 'vuex';
-export default {
-    components: {
-        Modal,
-    },
-    data() {
-        return {
-            input: '',
-            valid: false,
-        };
-    },
-    watch: {
-        input(v) {
-            this.valid = v.trim().length > 0;
+    import { mapMutations, mapActions } from 'vuex';
+    export default {
+        components: {
+            Modal,
         },
-    },
-    mounted() {
-        this.$refs.input.focus();
-    },
-    methods: {
-        ...mapMutations(['SET_IS_ADD_BOARD']),
-        ...mapActions(['ADD_BOARD', 'FETCH_BOARDS']),
-        addBoard() {
-            this.SET_IS_ADD_BOARD(false);
-            this.ADD_BOARD({ title: this.input }).then(({ id }) => {
-                this.$router.push(`/b/${id}`);
-            });
+        data() {
+            return {
+                input: '',
+                valid: false,
+            };
         },
-    },
-};
+        watch: {
+            input(v) {
+                this.valid = v.trim().length > 0;
+            },
+        },
+        mounted() {
+            this.$refs.input.focus();
+        },
+        methods: {
+            ...mapMutations(['SET_IS_ADD_BOARD']),
+            ...mapActions(['ADD_BOARD', 'FETCH_BOARDS']),
+            addBoard() {
+                this.SET_IS_ADD_BOARD(false);
+                this.ADD_BOARD({ title: this.input }).then(({ id }) => {
+                    this.$router.push(`/b/${id}`);
+                });
+            },
+        },
+    };
 </script>
 
 <style></style>

@@ -36,46 +36,46 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+    import { mapActions } from 'vuex';
 
-export default {
-    data() {
-        return {
-            email: 'test@test.com',
-            password: '123123',
-            error: '',
-            rPath: '',
-        };
-    },
-    computed: {
-        invalidForm() {
-            return !this.email || !this.password;
+    export default {
+        data() {
+            return {
+                email: 'test@test.com',
+                password: '123123',
+                error: '',
+                rPath: '',
+            };
         },
-    },
-    created() {
-        this.rPath = this.$route.query.rPath || '/';
-    },
-    methods: {
-        ...mapActions(['LOGIN']),
-        onSubmit() {
-            this.LOGIN({ email: this.email, password: this.password })
-                .then(() => {
-                    this.$router.push(this.rPath);
-                })
-                .catch(err => {
-                    this.error = err.data.error;
-                });
+        computed: {
+            invalidForm() {
+                return !this.email || !this.password;
+            },
         },
-    },
-};
+        created() {
+            this.rPath = this.$route.query.rPath || '/';
+        },
+        methods: {
+            ...mapActions(['LOGIN']),
+            onSubmit() {
+                this.LOGIN({ email: this.email, password: this.password })
+                    .then(() => {
+                        this.$router.push(this.rPath);
+                    })
+                    .catch(err => {
+                        this.error = err.data.error;
+                    });
+            },
+        },
+    };
 </script>
 
 <style>
-.login {
-    width: 400px;
-    margin: 0 auto;
-}
-.error {
-    color: #f00;
-}
+    .login {
+        width: 400px;
+        margin: 0 auto;
+    }
+    .error {
+        color: #f00;
+    }
 </style>

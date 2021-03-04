@@ -63,110 +63,112 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+    import { mapState, mapMutations, mapActions } from 'vuex';
 
-export default {
-    computed: {
-        ...mapState(['board']),
-    },
-    mounted() {
-        Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
-            console.log(el);
-            el.style.backgroundColor = el.dataset.value;
-        });
-    },
-    methods: {
-        ...mapMutations(['SET_IS_SHOW_BOARD_SETTINGS', 'SET_THEME']),
-        ...mapActions(['DELETE_BOARD', 'UPDATE_BOARD']),
-        onClose() {
-            this.SET_IS_SHOW_BOARD_SETTINGS(false);
+    export default {
+        computed: {
+            ...mapState(['board']),
         },
-
-        onDeleteBoard() {
-            if (!window.confirm(`Delete ${this.board.title} Board`)) return;
-            console.log();
-            this.DELETE_BOARD({ id: this.board.id })
-                .then(() => this.SET_IS_SHOW_BOARD_SETTINGS(false))
-                .then(() => this.$router.push('/'));
+        mounted() {
+            Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(
+                el => {
+                    console.log(el);
+                    el.style.backgroundColor = el.dataset.value;
+                },
+            );
         },
+        methods: {
+            ...mapMutations(['SET_IS_SHOW_BOARD_SETTINGS', 'SET_THEME']),
+            ...mapActions(['DELETE_BOARD', 'UPDATE_BOARD']),
+            onClose() {
+                this.SET_IS_SHOW_BOARD_SETTINGS(false);
+            },
 
-        onChangeTheme(el) {
-            console.log(el);
+            onDeleteBoard() {
+                if (!window.confirm(`Delete ${this.board.title} Board`)) return;
+                console.log();
+                this.DELETE_BOARD({ id: this.board.id })
+                    .then(() => this.SET_IS_SHOW_BOARD_SETTINGS(false))
+                    .then(() => this.$router.push('/'));
+            },
 
-            const bgColor = el.target.dataset.value;
+            onChangeTheme(el) {
+                console.log(el);
 
-            console.log('bgColor', bgColor);
-            this.UPDATE_BOARD({
-                id: this.board.id,
-                title: this.board.title,
-                bgColor,
-            }).then(() => this.SET_THEME(bgColor));
+                const bgColor = el.target.dataset.value;
+
+                console.log('bgColor', bgColor);
+                this.UPDATE_BOARD({
+                    id: this.board.id,
+                    title: this.board.title,
+                    bgColor,
+                }).then(() => this.SET_THEME(bgColor));
+            },
         },
-    },
-};
+    };
 </script>
 
 <style>
-.board-menu {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    background-color: #edeff0;
-    width: 300px;
-    transition: all 0.3s;
-}
-.board-menu-header {
-    height: 46px;
-    padding: 0 6px 0 12px;
-    border-bottom: #bbb solid 1px;
-}
-.header-title {
-    font-size: 18px;
-    text-align: center;
-    line-height: 46px;
-    font-weight: 700;
-}
-.header-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    text-decoration: none;
-    font-size: 24px;
-    color: #999;
-}
-.menu-list {
-    list-style: none;
-    padding-left: 0px;
-}
-.menu-list li {
-    height: 18px;
-    line-height: 18px;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 3px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #111;
-    margin-bottom: 5px;
-    cursor: pointer;
-}
-.menu-list li:hover,
-.menu-list li:focus {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-.menu-list li a {
-    text-decoration: none;
-    color: inherit;
-}
-.color-picker {
-    margin: 0 15px;
-}
-.color-picker a {
-    display: inline-block;
-    width: 49%;
-    height: 100px;
-    border-radius: 8px;
-    margin: 1px;
-}
+    .board-menu {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        background-color: #edeff0;
+        width: 300px;
+        transition: all 0.3s;
+    }
+    .board-menu-header {
+        height: 46px;
+        padding: 0 6px 0 12px;
+        border-bottom: #bbb solid 1px;
+    }
+    .header-title {
+        font-size: 18px;
+        text-align: center;
+        line-height: 46px;
+        font-weight: 700;
+    }
+    .header-close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-decoration: none;
+        font-size: 24px;
+        color: #999;
+    }
+    .menu-list {
+        list-style: none;
+        padding-left: 0px;
+    }
+    .menu-list li {
+        height: 18px;
+        line-height: 18px;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 3px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+    .menu-list li:hover,
+    .menu-list li:focus {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    .menu-list li a {
+        text-decoration: none;
+        color: inherit;
+    }
+    .color-picker {
+        margin: 0 15px;
+    }
+    .color-picker a {
+        display: inline-block;
+        width: 49%;
+        height: 100px;
+        border-radius: 8px;
+        margin: 1px;
+    }
 </style>
