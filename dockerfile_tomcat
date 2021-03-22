@@ -1,0 +1,15 @@
+# build stage
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+
+
+RUN npm install
+COPY . .
+RUN npm run build
+
+# production stage
+FROM tomcat:10.0.2-jdk15-openjdk-oraclelinux7 as production-stage
+RUN rm -Rf /usr/local/tomcat/webapps/ROOT 
+COPY --from=build-stage /app/dist /usr/local/tomcat/webapps/ROOT 
+CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]

@@ -3,6 +3,6 @@ module.exports = {
         overlay: false,
     },
     runtimeCompiler: true,
-    publicPath: process.env.NODE_ENV === 'production' ? '/vue-trello/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
     // vue: 'vue/dist/vue.esm-bundler.js',
 };

@@ -7,7 +7,11 @@ COPY . .
 RUN npm run build
 
 # production stage
-FROM tomcat:10.0.2-jdk15-openjdk-oraclelinux7 as production-stage
-RUN rm -Rf /usr/local/tomcat/webapps/ROOT 
-COPY --from=build-stage /app/dist /usr/local/tomcat/webapps/ROOT 
-CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build-stage /app/dist .
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
